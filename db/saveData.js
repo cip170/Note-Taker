@@ -1,17 +1,20 @@
-const util = require("util");
-const fs = require("fs");
+// Dependencies
+const util = require('util');
+const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
+
+// Variables to return response in form of promise object instead of using callback function
+const readNote = util.promisify(fs.readFile);
+const writeNote = util.promisify(fs.writeFile);
 
 class Save {
     write(note) {
-        return writeFileAsync("db/db.json", JSON.stringify(note));
+        return writeNote("db/db.json", JSON.stringify(note));
     }
 
     read() {
-        return readFileAsync('db/db.json', 'utf8');
+        return readNote("db/db.json", "utf8");
     }
 
     retrieveNotes(){
@@ -33,8 +36,10 @@ class Save {
             throw new Error('Both title and text can not be blank');
         }
 
+        //Use UUID package to add unique IDs
         const newNote = { title, text, id: uuidv4() };
 
+        // Retrieve, add, and update notes
         return this.retrieveNotes()
             .then(notes => [...notes, newNote])
             .then(updatedNotes => this.write(updatedNotes))
@@ -47,6 +52,5 @@ class Save {
             .then(filteredNotes => this.write(filteredNotes));
     }
 }
-
 
 module.exports = new Save();
