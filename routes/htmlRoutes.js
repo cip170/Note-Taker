@@ -1,5 +1,5 @@
-// Dependencies 
 const router = require('express').Router();
+// Import 'path node module
 const path =  require('path');
 
 // GET routes for possible query parameters - intended for HTML page

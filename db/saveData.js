@@ -1,4 +1,4 @@
-// Dependencies
+// Dependencies - importing node modules
 const util = require('util');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
@@ -8,6 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 const readNote = util.promisify(fs.readFile);
 const writeNote = util.promisify(fs.writeFile);
 
+// class functions to call apiRoutes
 class Save {
     write(note) {
         return writeNote("db/db.json", JSON.stringify(note));
@@ -17,6 +18,7 @@ class Save {
         return readNote("db/db.json", "utf8");
     }
 
+    // retrieve from user input
     retrieveNotes(){
         return this.read().then(notes => {
             let parsedNotes;
@@ -46,6 +48,7 @@ class Save {
             .then(() => newNote);
     }
 
+    // delete notes using 'id' of note clicked
     deleteNote(id) {
         return this.retrieveNotes()
             .then(notes => notes.filter(note => note.id !== id))
